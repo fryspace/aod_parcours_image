@@ -5,7 +5,7 @@ exploration d'une image aleatoire avec une pile
 """
 
 from image import Image
-from algos import exploration, animer
+from algos import exploration_tas_ordonné, animer
 from utils import limitation_memoire
 
 
@@ -17,7 +17,7 @@ def main():
 
     img = Image.aleatoire(256, 30)
     # limitation_memoire()  # decommentez-moi pour voir si ca passe
-    animer(img, exploration(img), fichier="exploration_aleatoire_pile.gif")
+    animer(img, exploration_tas_ordonné(img), fichier="exploration_aleatoire_ordonné.gif")
 
 
 if __name__ == "__main__":
