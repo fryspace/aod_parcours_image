@@ -1,3 +1,9 @@
+---
+title: "solution"
+output:
+  html_document: default
+
+---
 # Exploration
 
 ## Animations
@@ -8,8 +14,7 @@
 
 ## Ordre des voisins
 
-Le meilleur ordre c'est ...
-parce que ...
+Le meilleur ordre pour le parcours des voisins est 
 
 ## Taille des structures
 
@@ -18,7 +23,7 @@ parce que ...
 On voit que....
 C'est lié à....
 
-## Pire cas
+## Pire cas (tas quadratique)
 
 
 ![pire cas tas](pire_cas_tas.png)

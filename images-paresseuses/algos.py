@@ -38,14 +38,18 @@ def exploration(image):
     """
     def pixel_blanc(p):
         return not image.pixel(*p)
-
+    taille_pile=0
     a_voir = [(0, 0)]
     while a_voir:
+        if len(a_voir)>taille_pile:
+            taille_pile = len(a_voir)
+        
         courant = a_voir.pop()
         if pixel_blanc(courant):
             image.noircir_pixel(*courant)
             yield a_voir
             a_voir.extend(filter(pixel_blanc, voisins(image.taille, courant)))
+    print(taille_pile)
 
 
 def suppression(tab):
@@ -80,7 +84,10 @@ def exploration_tas(image):
         return not image.pixel(*p)
     
     tas = [(0,0)]
+    taille=0
     while tas:
+        if(len(tas)>taille):
+            taille=len(tas)
         courant = tas[0]
         suppression(tas)
         if pixel_blanc(courant):
@@ -90,6 +97,7 @@ def exploration_tas(image):
             new_vois.extend(filter(pixel_blanc, voisins(image.taille, courant)))
             for i in range(len(new_vois)):
                 insertion_tas(tas, new_vois[i])
+    print(taille)
             
 
 
@@ -143,7 +151,10 @@ def exploration_tas_ordonné(image):
     def pixel_blanc(p):
         return not image.pixel(*p)
     tas=[entrelacement((0,0))]
+    taille=0
     while tas:
+        if (len(tas)>taille):
+            taille=len(tas)
         courant = desentrelacement(tas[0])
         suppression(tas)
         if pixel_blanc(courant):
@@ -153,7 +164,7 @@ def exploration_tas_ordonné(image):
             new_vois.extend(filter(pixel_blanc, voisins(image.taille, courant)))
             for i in range(len(new_vois)):
                 insertion_tas(tas, entrelacement(new_vois[i]))
-            
+    print(taille)
 
 
 

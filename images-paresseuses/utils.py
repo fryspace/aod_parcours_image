@@ -12,6 +12,7 @@ import psutil
 INUTILE = None
 
 
+
 def limitation_memoire():
     """
     limite fortement la memoire pour le reste de l'execution
