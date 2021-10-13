@@ -18,6 +18,7 @@ def main():
     """
     for taille in range(32, 600, 16):
         img = Image.aleatoire(taille, 30)
+        print(taille, end=" ")
         animer(img, exploration_tas_ordonné(img), fichier="bidule.gif")
         
     #pl.plot(np.array(taille), np.array(taille_pile), "-r")
