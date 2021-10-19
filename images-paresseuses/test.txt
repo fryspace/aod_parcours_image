@@ -1,0 +1,2 @@
+1200
+echec de la creation du gif.image magick (convert) est-il installe ?

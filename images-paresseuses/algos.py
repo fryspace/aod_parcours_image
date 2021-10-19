@@ -84,10 +84,8 @@ def exploration_tas(image):
         return not image.pixel(*p)
     
     tas = [(0,0)]
-    taille=0
     while tas:
-        if(len(tas)>taille):
-            taille=len(tas)
+        
         courant = tas[0]
         suppression(tas)
         if pixel_blanc(courant):
@@ -97,7 +95,6 @@ def exploration_tas(image):
             new_vois.extend(filter(pixel_blanc, voisins(image.taille, courant)))
             for i in range(len(new_vois)):
                 insertion_tas(tas, new_vois[i])
-    print(taille)
             
 
 
