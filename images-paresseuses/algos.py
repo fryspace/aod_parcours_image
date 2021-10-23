@@ -4,6 +4,7 @@ les algorithmes un peu costauds sont ici
 from itertools import takewhile, chain
 from os import system
 import tempfile
+from imagep import Bloc, ImageParesseuse
 from utils import voisins, compte
 
 
@@ -165,6 +166,36 @@ def exploration_tas_ordonné(image):
 
 
 
+def iterateur_ligne(image):
+    n= image.taille
+    for i in range (0,n):
+        for j in range (0, n):
+            yield (i,j)
+
+
+def iterateur_bloc(image):
+    n=image.taille
+    nombre_bloc_ligne = n//int(Bloc.TAILLE ** (1/2))
+    nombre_point_ligne_bloc= n * int(Bloc.TAILLE ** (1/2))
+    #on veut faire du blocking pour des blocs de taille 256, on doit donc se baser sur une taille de bloc 
+    #telle que 2K²=256 avec K la longueur du bloc, pour cela on utilise la classe bloc
+    for i in range(n**2//4):
+        bloc=image.bloc(i)
+        colonne_bloc= i % nombre_bloc_ligne
+        ligne_bloc = i // nombre_bloc_ligne
+        ligne_depart = ligne_bloc * int(bloc.TAILLE ** (1/2))
+        colonne_depart = colonne_bloc * int(bloc.TAILLE ** (1/2))
+        for j in range(0, bloc.TAILLE):
+            k = ligne_depart + j // int(bloc.TAILLE ** (1/2))
+            l= colonne_depart + j % int(bloc.TAILLE ** (1/2))
+            yield (k,l)
+
+            
+                
+    
+
+
+
 
 def vue_degagee(image, iterateur_pixels):
     """
@@ -172,6 +203,8 @@ def vue_degagee(image, iterateur_pixels):
     """
     def pixel_blanc(pixel):
         return not image.pixel(*pixel)
+    
+    #l=[0]
 
     def vue_pixel(pixel):
         def vision(pixels):
@@ -185,7 +218,9 @@ def vue_degagee(image, iterateur_pixels):
         gauche = vision((ligne, c) for c in reversed(range(0, colonne)))
         droite = vision((ligne, c) for c in range(colonne+1, image.taille))
         horizontal = chain(gauche, droite)
-
-        return compte(chain(horizontal, vertical))
-
+        val2=compte(chain(horizontal, vertical))
+        #l[0] = max(l[0], val2)
+        return val2
+    
+    
     return max(filter(pixel_blanc, iterateur_pixels), key=vue_pixel)

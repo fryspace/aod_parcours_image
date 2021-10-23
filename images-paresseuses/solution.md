@@ -30,14 +30,14 @@ C'est lié au fait que lorsque l'on parcourt par pile, on accumule au fur et à 
 
 En rose les voisins, non traités, ajoutés dans le tas lors du parcours et en bleu clair le parcours fait. 
 ![tas quadratique](cas_quadratique.jpg)
-Il faut un graphe en serpent, en effet, si l'on en suit la figure précédente, on se rend compte que le nombre maximal de sommet dans le tas (illustré sur le schéma) est grossièrement en $\dfrac{1}{3}n^2$ ce qui en fait un $O(n^2)$. Ce cas là montre donc un cas où le parcours par tas est quadratique.
+Il faut un graphe en serpent, en effet, si l'on en suit la figure précédente, on se rend compte que le nombre maximal de sommet dans le tas (illustré sur le schéma) est en $\dfrac{n}{3} (n-1)$ ce qui est équivalent à $\dfrac{1}{3}n^2$ ce qui en fait un $O(n^2)$. Ce cas là montre donc un cas où le parcours par tas est quadratique.
 
 
 # Vue dégagée
 
 ## Accès
 
-En terme de défaut de cache les accès verticaux sont plus coûteux que les accès horizontaux car la ligne est chargée dans le cache
+En terme de défaut de cache les accès verticaux sont plus coûteux que les accès horizontaux car la ligne est chargée dans le cache, alors que pour une colone, il faut charger toutes les lignes une par une.
 
 ## Défauts
 

@@ -5,11 +5,11 @@ exploration d'une image aleatoire avec une pile
 """
 
 from image import Image
-from algos import exploration_tas_ordonné, animer, exploration, exploration_tas
-from utils import limitation_memoire
+from algos import exploration_tas_ordonné, animer, exploration, exploration_tas, iterateur_bloc, iterateur_ligne, vue_degagee
+from imagep import ImageParesseuse
+from utils import compte, limitation_memoire
 import matplotlib.pyplot as pl
 import numpy as np
-
 
 def main():
     """
@@ -17,11 +17,18 @@ def main():
     soit noir puis on explore a l'aide d'une pile en generant une animation.
     """
 
-    img = Image.aleatoire(600, 30)
-    animer(img, exploration_tas(img), fichier="bidule.gif")
-        
-        
-    # limitation_memoire()  # decommentez-moi pour voir si ca passe
+    #limitation_memoire() 
+    img = Image.aleatoire(256, 30)
+    img.sauvegarde("fichier_paresseux.png")
+    imgp=ImageParesseuse("fichier_paresseux.png")
+    #animer(img, exploration_tas(img), fichier="bidule.gif")
+    print(vue_degagee(imgp, iterateur_ligne(imgp)))
+    #print(vue_degagee(imgp, iterateur_bloc(imgp)))
+    #iterateur_bloc(imgp)
+    #print(compte(iterateur_ligne(imgp)))
+    #print(compte(iterateur_bloc(imgp)))
+    #iterateur_bloc(imgp)
+    
     #animer(img, exploration_tas_ordonné(img), fichier="exploration_aleatoire_entrelacer.gif")
 
 
