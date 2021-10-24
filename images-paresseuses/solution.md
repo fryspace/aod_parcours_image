@@ -41,14 +41,20 @@ En terme de défaut de cache les accès verticaux sont plus coûteux que les acc
 
 ## Défauts
 
-il faut un graphe
+![courbe_defaut_cache](courbe_defaut_cache.png)
 
 ## Analyse des comportements
 
-On voit que...
-Ça s'explique parce que...
+Dans notre graphe on voit clairement que la méthode par ligne est la plus efficace pour des images de très petite taille mais son nombre de défaut de cahce augmente très vite en fonction de la taille de l'image et devient très vite la solution la moins efficace.  Ainsi, la méthode par bloc devient plus efficace que celle par ligne mais reste peu satisfaisante à terme.  
+La méthode Z curve récursive est beaucoup plus efficace que les 2 précédentes mais l'on constate à cause de l'implémentation qu'il y a de nombreuses valeurs inutilisables car on se retrouve dans un cas ou il n'y a pas 4 points dans la condition d'arret et donc il est impossible de faire un Z. Mais cette méthode pourrait être réadaptée.  
+Ainsi, la meilleur méthode est celle avec l'itérateur récursif dans les cas ou cela est applicable ou sinon pour de très petites images l'itérateur par ligne est préférable.
 
 
 ## Tests additionnels
 
-On a aussi regardé....
+On a aussi regardé les différentes piles d'appel pour les 3 itérateurs qui nous permettent de comprendre comment sont gérés les différents itérateurs. Pour cela on a utilisé kcachegrind pour faire un profiling des données des appels.
+![calltree_iterateur_ligne](calltree_iterateur_ligne.png)
+![calltree_iterateur_bloc](calltree_iterateur_bloc.png)
+![calltree_iterateur_recursif](calltree_iterateur_recursif.png)
+
+On remarque que l'itérateur de ligne fonctionne différament des 2 autres avec un appel en moins ce qui peut expliquer en partie les différences de fonctionnement mémoire de ces itérateurs.

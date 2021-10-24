@@ -8,6 +8,10 @@ from imagep import Bloc, ImageParesseuse
 from utils import voisins, compte
 
 
+"""
+Partie 1 : exploration et animation des gif
+"""
+
 def animer(image, etapes, fichier="animation.gif", pas=100):
     """
     genere un fichier
@@ -101,7 +105,6 @@ def exploration_tas(image):
 
 
 
-
 def entrelacement(t):
     abs, ord = t[0], t[1]
     a=bin(abs)
@@ -165,6 +168,10 @@ def exploration_tas_ordonné(image):
     print(taille)
 
 
+"""
+Partie 2 : vue dégagée et les 3 itérateurs
+"""
+
 
 def iterateur_ligne(image):
     n= image.taille
@@ -190,10 +197,22 @@ def iterateur_bloc(image):
             l= colonne_depart + j % int(bloc.TAILLE ** (1/2))
             yield (k,l)
 
-            
-                
-    
 
+def iterateur_recursif(image):
+    n=image.taille
+    yield from decoupage(n, (0,0))
+    
+                
+def decoupage(n, debut):
+    x, y = debut
+    if n == 2:
+        for tuple in [(x,y), (x, y+1), (x+1, y), (x+1, y+1)]:
+            yield tuple
+    else:
+        yield from decoupage(n//2, (x,y))
+        yield from decoupage(n//2, (x, y + int(n//2)))
+        yield from decoupage(n//2, (x + int(n//2) , y ))
+        yield from decoupage(n//2, (x + int(n//2) , y + int(n //2)) )
 
 
 
