@@ -9,7 +9,7 @@ from utils import voisins, compte
 
 
 """
-Partie 1 : exploration et animation des gif
+Partie 1 : exploration par pile, tas et tas ordonné puis animation des gif
 """
 
 def animer(image, etapes, fichier="animation.gif", pas=100):
@@ -36,10 +36,8 @@ image magick (convert) est-il installe ?")
 
 def exploration(image):
     """
-    exploration (et modification)
-    de l'image en profondeur d'abord,
-    a l'aide d'une pile.
-    on yield a chaque etape la pile.
+    exploration (et modification) de l'image en profondeur d'abord,
+    a l'aide d'une pile. On yield a chaque etape la pile.
     """
     def pixel_blanc(p):
         return not image.pixel(*p)
@@ -58,6 +56,9 @@ def exploration(image):
 
 
 def suppression(tab):
+    """
+    fonction premettant de supprimer un élément du tas
+    """
     s = len(tab) -1
     e = tab[s]
     i=0
@@ -72,6 +73,9 @@ def suppression(tab):
     tab.pop()
 
 def insertion_tas(tab, elem):
+    """
+    fonction permettant d'ajouter un élément au tas
+    """
     i=len(tab)
     tab.append(elem)
     while i>0 and elem > tab[int((i-1)/2)]:
@@ -83,7 +87,7 @@ def insertion_tas(tab, elem):
 
 def exploration_tas(image):
     """ 
-    exploration en tas 
+    exploration des images par des tas 
     """
     def pixel_blanc(p):
         return not image.pixel(*p)
@@ -106,6 +110,10 @@ def exploration_tas(image):
 
 
 def entrelacement(t):
+    """
+    fonction qui en prenant un tuple, permet d'entrelacer les bits 
+    de l'ordonné et de l'abscisse et renvoit l'entier correspondant 
+    """
     abs, ord = t[0], t[1]
     a=bin(abs)
     b=bin(ord) #on a b du type b='0b010101'
@@ -114,7 +122,7 @@ def entrelacement(t):
         comp = ""
         for i in range(len(a)-len(b)):
             comp+="0"
-        b=comp+b[2::] #on complète par des zeros
+        b=comp+b[2::] #on complète par des zeros si b plus petit que a
         a=a[2::] #on enlève la marque du binaire '0b'
         for i in range(len(a)):
             res+=b[i]
@@ -132,6 +140,10 @@ def entrelacement(t):
     return int(res, 2)
 
 def desentrelacement(t):
+    """
+    fonction permettant, à l'aide d'un entier entrelacé, de retrouver 
+    l'abscisse et l'ordonné correspondants
+    """
     abs, ord = "0b", "0b"
     a=bin(t)
     a=a[2::]
@@ -149,6 +161,9 @@ def desentrelacement(t):
 
 
 def exploration_tas_ordonné(image):
+    """
+    Parcours d'une image à l'aide d'un tas ordonné par entrelacement
+    """
     def pixel_blanc(p):
         return not image.pixel(*p)
     tas=[entrelacement((0,0))]
@@ -168,19 +183,29 @@ def exploration_tas_ordonné(image):
     print(taille)
 
 
+
+
 """
 Partie 2 : vue dégagée et les 3 itérateurs
 """
 
 
+
 def iterateur_ligne(image):
+    """
+    parcours d'une image ligne par ligne et yield les pixels
+    """
     n= image.taille
     for i in range (0,n):
         for j in range (0, n):
             yield (i,j)
 
 
-def iterateur_bloc(image):
+def iterateur_bloc_v1(image):
+    """
+    1ere version de l'itérateur par bloc (qui n'a pas été utilisé car moins efficace) 
+    qui utilise la classe bloc et qui yield les bloc dans l'ordre 
+    """
     n=image.taille
     nombre_bloc_ligne = n//int(Bloc.TAILLE ** (1/2))
     nombre_point_ligne_bloc= n * int(Bloc.TAILLE ** (1/2))
@@ -198,12 +223,44 @@ def iterateur_bloc(image):
             yield (k,l)
 
 
+def iterateur_bloc_v2(image):
+    """
+    version finale de l'itérateur par bloc qui yield les blocs découpés
+    """
+    n=image.taille
+    nombre_bloc= n//4
+    for i in range(nombre_bloc):
+        for j in range(nombre_bloc):
+            yield (4*i, 4*j)
+            yield (4*i, 4*j + 1)
+            yield (4*i, 4*j + 2)
+            yield (4*i, 4*j + 3)
+            yield (4*i + 1, 4*j)
+            yield (4*i + 1, 4*j + 1)
+            yield (4*i + 1, 4*j + 2)
+            yield (4*i + 1, 4*j + 3)
+            yield (4*i + 2, 4*j)
+            yield (4*i + 2, 4*j + 1)
+            yield (4*i + 2, 4*j + 2)
+            yield (4*i + 2, 4*j + 3)
+            yield (4*i + 3, 4*j)
+            yield (4*i + 3, 4*j + 1)
+            yield (4*i + 3, 4*j + 2)
+            yield (4*i + 3, 4*j + 3)
+
+
 def iterateur_recursif(image):
+    """
+    fonction de l'itérateur Z curve
+    """
     n=image.taille
     yield from decoupage(n, (0,0))
     
                 
 def decoupage(n, debut):
+    """
+    fonction récursive qui permet le parcours en Z dans l'image
+    """
     x, y = debut
     if n == 2:
         for tuple in [(x,y), (x, y+1), (x+1, y), (x+1, y+1)]:
